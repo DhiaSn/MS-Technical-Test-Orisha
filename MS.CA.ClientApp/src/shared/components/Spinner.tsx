@@ -6,9 +6,9 @@ export interface SpinnerProps {
 
 export function Spinner({ label }: SpinnerProps) {
     return (
-        <span className={styles.spinner} role="status">
+        <div className={styles.spinner} role="status">
             <span className={styles.ring} aria-hidden="true" />
-            <span className="visually-hidden">{label}</span>
-        </span>
+            <span className={styles.label}>{label}</span>
+        </div>
     );
 }

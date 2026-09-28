@@ -51,5 +51,17 @@
     &[aria-busy='true'] {
         cursor: progress;
         opacity: 0.7;
+        animation: busy-pulse 0.8s ease-in-out infinite alternate;
+    }
+}
+
+@keyframes busy-pulse {
+    from {
+        opacity: 0.8;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 0.4;
+        transform: scale(1.02);
     }
 }
