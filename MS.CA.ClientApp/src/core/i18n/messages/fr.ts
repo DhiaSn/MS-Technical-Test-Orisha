@@ -1,0 +1,23 @@
+export const fr = {
+    'app.title': 'Réception logistique',
+    'app.description': 'Validation de la réception des marchandises d’une commande fournisseur.',
+    'error.network': 'Impossible de joindre le serveur. Vérifiez votre connexion.',
+    'error.timeout': 'Le serveur met trop de temps à répondre.',
+    'error.unauthorized': 'Votre session a expiré. Reconnectez-vous.',
+    'error.notFound': 'Élément introuvable.',
+    'error.validation': 'Certaines informations sont invalides.',
+    'error.server': 'Une erreur est survenue côté serveur. Réessayez dans un instant.',
+    'error.unknown': 'Une erreur inattendue est survenue.',
+    'error.loadFailed': 'Chargement impossible',
+    'error.page.title': 'Une erreur est survenue',
+    'notFound.title': 'Page introuvable',
+    'notFound.description': 'Cette page n’existe pas ou a été déplacée.',
+    'notFound.back': 'Retour à la réception',
+    'action.retry': 'Réessayer',
+    'skip.toContent': 'Aller au contenu',
+    'state.loading': 'Chargement…',
+    'tone.error': 'Erreur',
+    'tone.info': 'Information',
+    'toast.region': 'Notifications',
+    'toast.dismiss': 'Fermer la notification'
+} as const;

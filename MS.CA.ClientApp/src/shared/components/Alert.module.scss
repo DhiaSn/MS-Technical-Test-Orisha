@@ -1,0 +1,24 @@
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--border);
+    border-inline-start-width: 4px;
+    border-radius: var(--radius);
+}
+
+.error {
+    background: var(--danger-surface);
+    border-color: var(--danger);
+}
+
+.info {
+    background: var(--info-surface);
+    border-color: var(--info);
+}
+
+.icon {
+    flex: none;
+    font-weight: 700;
+}

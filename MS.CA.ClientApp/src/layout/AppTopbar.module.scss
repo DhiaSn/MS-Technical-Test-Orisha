@@ -1,0 +1,14 @@
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 3.5rem;
+    padding: var(--space-2) var(--space-4);
+    background: var(--surface);
+    border-block-end: 1px solid var(--border);
+}
+
+.title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+}

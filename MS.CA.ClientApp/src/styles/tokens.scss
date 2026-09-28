@@ -1,0 +1,66 @@
+:root {
+    --surface: #ffffff;
+    --surface-sunken: #eef1f4;
+    --text: #17202a;
+    --text-muted: #4a5663;
+    --border: #d5dbe1;
+    --border-strong: #8794a1;
+
+    --accent: #0b5cad;
+    --accent-hover: #084a8c;
+    --on-accent: #ffffff;
+
+    --danger: #b3261e;
+    --danger-surface: #fbeceb;
+    --info: #0b5cad;
+    --info-surface: #e8f1fb;
+
+    // Colour alone never carries a status: the checkbox glyph (empty, dash, tick) is the second signal.
+    --status-none: #5f6b78;
+    --status-partial: #a35a00;
+    --status-all: #1b7a3d;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+
+    --radius: 0.5rem;
+    --radius-full: 999px;
+
+    --text-sm: 0.875rem;
+    --text-lg: 1.25rem;
+
+    --shadow: 0 4px 12px rgb(0 0 0 / 15%);
+    --duration: 200ms;
+    --ease: cubic-bezier(0.2, 0, 0, 1);
+    --focus-ring: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --surface: #161b21;
+        --surface-sunken: #0f1317;
+        --text: #e8edf2;
+        --text-muted: #a9b4bf;
+        --border: #2f3944;
+        --border-strong: #6c7a89;
+
+        --accent: #5aa5f0;
+        --accent-hover: #7db9f5;
+        --on-accent: #0a1622;
+
+        --danger: #f2807a;
+        --danger-surface: #2e1715;
+        --info: #5aa5f0;
+        --info-surface: #13253a;
+
+        --status-none: #9aa6b2;
+        --status-partial: #f0a54a;
+        --status-all: #4fc177;
+
+        --shadow: 0 4px 12px rgb(0 0 0 / 50%);
+    }
+}
