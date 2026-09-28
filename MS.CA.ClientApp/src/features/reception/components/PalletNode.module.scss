@@ -1,0 +1,51 @@
+.node {
+    list-style: none;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 2.75rem;
+    padding-block: var(--space-2);
+    border-block-end: 1px solid var(--border-strong);
+}
+
+.disclosure {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    font-size: var(--text-lg);
+    color: var(--text);
+    cursor: pointer;
+    background: none;
+    border: none;
+    border-radius: var(--radius);
+
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+}
+
+.title {
+    flex: 1;
+    min-width: 0;
+    font-weight: 700;
+}
+
+.progress {
+    flex: none;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+}
+
+.children {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}

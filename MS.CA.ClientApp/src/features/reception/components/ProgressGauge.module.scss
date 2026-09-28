@@ -1,0 +1,23 @@
+.gauge {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+}
+
+.text {
+    margin: 0;
+    font-weight: 600;
+}
+
+.done {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--status-all);
+}
+
+@media (max-width: 40rem) {
+    .gauge {
+        align-items: flex-start;
+    }
+}

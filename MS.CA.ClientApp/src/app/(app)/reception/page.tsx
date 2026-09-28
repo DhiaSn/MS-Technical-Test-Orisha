@@ -1,5 +1,5 @@
-import { translate } from '@/core/i18n/translate';
+import { ReceptionPage } from '@/features/reception/pages/ReceptionPage';
 
 export default function ReceptionRoute() {
-    return <h1>{translate('app.title')}</h1>;
+    return <ReceptionPage />;
 }

@@ -1,4 +1,4 @@
-# Local run only. Credentials are throwaway defaults for a container bound to 127.0.0.1.
+# Local run only. Credentials are throwaway defaults for containers bound to 127.0.0.1.
 name: reception
 
 services:
@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-reception}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-reception_local_dev}
     ports:
-      - "127.0.0.1:5433:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -22,9 +22,70 @@ services:
     networks:
       - reception
 
+  api:
+    build:
+      context: ./MS.SS.Core
+      dockerfile: MS.SS.Core.API/Dockerfile
+    container_name: reception-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=${POSTGRES_DB:-reception};Username=${POSTGRES_USER:-reception};Password=${POSTGRES_PASSWORD:-reception_local_dev}
+      DatabaseSettings__AutoMigrate: "true"
+      Seeding__Enabled: "true"
+      # Throwaway signing key for a local demo (D28). Set JWT_SECRET for anything else; the API refuses < 32 bytes.
+      TokenOptions__Secret: ${JWT_SECRET:-local-demo-signing-secret-change-me-0123456789}
+      AllowedOrigins__0: http://localhost:${WEB_PORT:-3000}
+      AllowedOrigins__1: http://127.0.0.1:${WEB_PORT:-3000}
+      # Only the web container's fixed address is a trusted proxy (see networks.reception.ipam below),
+      # not the whole compose subnet: a client hitting the API's own published port arrives NATed
+      # through the network gateway address, not through .10, so it cannot spoof X-Forwarded-For.
+      ForwardedHeaders__KnownProxies__0: 172.28.0.10
+    ports:
+      - "127.0.0.1:${API_PORT:-5080}:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    networks:
+      - reception
+
+  web:
+    build:
+      context: ./MS.CA.ClientApp
+      args:
+        API_URL: http://api:8080
+    container_name: reception-web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:3000"
+    healthcheck:
+      # 127.0.0.1, not localhost: this image's resolver tries ::1 first and the standalone
+      # server only binds the IPv4 wildcard, so "localhost" here never reports healthy.
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health > /dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+    networks:
+      reception:
+        ipv4_address: 172.28.0.10
+
 networks:
   reception:
     name: reception
+    ipam:
+      config:
+        - subnet: 172.28.0.0/24
 
 volumes:
   pgdata:
