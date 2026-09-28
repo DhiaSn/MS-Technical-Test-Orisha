@@ -29,12 +29,13 @@ public sealed class DemoOperatorSeedingTests(PostgresFixture postgres)
     [Fact]
     public async Task Booting_the_api_twice_on_the_same_database_does_not_duplicate_the_operator()
     {
-        await using (var first = new ReceptionApiFactory(postgres))
+        var database = postgres.CreateDatabase();
+        await using (var first = new ReceptionApiFactory(postgres, database))
         {
             Assert.Single(await LoadOperatorsAsync(first));
         }
 
-        await using var second = new ReceptionApiFactory(postgres);
+        await using var second = new ReceptionApiFactory(postgres, database);
 
         Assert.Single(await LoadOperatorsAsync(second));
     }

@@ -16,7 +16,12 @@ public static class ApiContractExtensions
     public static IServiceCollection AddApiContract(this IServiceCollection services)
     {
         services.ConfigureHttpJsonOptions(options =>
-            options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));
+        {
+            options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+
+            // The web defaults accept "4" for an integer; the contract answers a string with request.invalid.
+            options.SerializerOptions.NumberHandling = JsonNumberHandling.Strict;
+        });
 
         // Outside development a body that cannot be bound (malformed JSON, a string where a number
         // is expected) is otherwise answered with a bare 400 that never reaches
@@ -47,6 +52,8 @@ public static class ApiContractExtensions
         StatusCodes.Status403Forbidden => ErrorCodes.Forbidden,
         StatusCodes.Status404NotFound => ErrorCodes.NotFound,
         StatusCodes.Status409Conflict => ErrorCodes.Conflict,
+        StatusCodes.Status413PayloadTooLarge => ErrorCodes.RequestTooLarge,
+        StatusCodes.Status415UnsupportedMediaType => ErrorCodes.UnsupportedMediaType,
         StatusCodes.Status429TooManyRequests => ErrorCodes.RateLimited,
         >= StatusCodes.Status500InternalServerError => ErrorCodes.InternalError,
         _ => ErrorCodes.RequestInvalid

@@ -48,7 +48,9 @@ public readonly struct Result<T>
 
     public static implicit operator Result<T>(T? value) => value is not null ? new Result<T>(value) : new Result<T>();
     public static implicit operator Result<T>(Exception exception) => new(exception);
-    public static implicit operator Result(Result<T> result) => result.IsSuccess ? Result.Success() : Result.Failure(result.Exception);
+    public static implicit operator Result(Result<T> result) =>
+        result.IsSuccess ? Result.Success()
+        : Result.Failure(result.Exception ?? new InvalidOperationException("Result is null."));
 }
 
 public readonly struct Result(Exception exception)
