@@ -12,3 +12,11 @@
     font-size: var(--text-lg);
     font-weight: 700;
 }
+
+.session {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+    justify-content: flex-end;
+}

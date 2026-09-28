@@ -14,8 +14,11 @@ export function resetNavigation(): void {
     mockLocation('/reception');
 }
 
+// Next hands out one router for the life of the app; a fresh object per render would re-run effects.
+const router = { replace: navigation.replace };
+
 export const nextNavigationMock = {
-    useRouter: () => ({ replace: navigation.replace }),
+    useRouter: () => router,
     usePathname: () => navigation.pathname,
     useSearchParams: () => new URLSearchParams(navigation.search)
 };

@@ -21,5 +21,6 @@
 
     &[aria-busy='true'] {
         cursor: progress;
+        opacity: 0.6;
     }
 }

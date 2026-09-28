@@ -76,10 +76,18 @@ describe('LoginPage', () => {
         expect(navigation.replace).toHaveBeenCalledWith('/reception');
     });
 
-    it('does not bounce anywhere while the session is still being restored', () => {
+    it('shows a spinner and no form while the session is still being restored', () => {
         renderLogin({ status: 'loading' });
 
-        expect(screen.getByLabelText('Identifiant')).toBeInTheDocument();
+        expect(screen.getByText('Vérification de la session…')).toBeInTheDocument();
+        expect(screen.queryByLabelText('Identifiant')).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Se connecter' })).not.toBeInTheDocument();
         expect(navigation.replace).not.toHaveBeenCalled();
+    });
+
+    it('still offers the form when the session could not be checked', () => {
+        renderLogin({ status: 'error', error: new AppError({ kind: 'network', message: 'x' }) });
+
+        expect(screen.getByLabelText('Identifiant')).toBeInTheDocument();
     });
 });

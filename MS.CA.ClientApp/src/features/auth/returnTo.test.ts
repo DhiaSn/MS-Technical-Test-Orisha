@@ -15,8 +15,8 @@ describe('safeReturnTo', () => {
         'https://evil.example',
         'http://evil.example/reception',
         'javascript:alert(1)',
-        '/\evil.example',
-        '\\evil.example',
+        '/\\evil.example',
+        '\\\\evil.example',
         'reception',
         '',
         ' /reception',
@@ -25,9 +25,21 @@ describe('safeReturnTo', () => {
         '/login',
         '/login?returnTo=%2Freception',
         '/login#top',
-        '/sign-up'
+        '/login/',
+        '/login//',
+        '/LOGIN',
+        '/Login/?x=1',
+        '/login?x=1',
+        '/login#x',
+        '/sign-up',
+        '/sign-up/',
+        '/SIGN-UP'
     ])('falls back to the reception page for %j', (input) => {
         expect(safeReturnTo(input)).toBe('/reception');
+    });
+
+    it.each(['/reception/foo', '/loginfoo', '/login/foo', '/reception/'])('keeps %s', (input) => {
+        expect(safeReturnTo(input)).toBe(input);
     });
 
     it.each([null, undefined])('falls back for %s', (input) => {

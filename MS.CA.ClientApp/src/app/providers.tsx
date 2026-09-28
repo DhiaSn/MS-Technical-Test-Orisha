@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
+import { SessionProvider } from '@/features/auth/context/SessionContext';
 import { ToastProvider } from '@/shared/components';
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -17,7 +18,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <ToastProvider>{children}</ToastProvider>
+            <ToastProvider>
+                <SessionProvider>{children}</SessionProvider>
+            </ToastProvider>
         </QueryClientProvider>
     );
 }

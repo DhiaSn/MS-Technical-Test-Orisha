@@ -19,5 +19,17 @@ export const fr = {
     'tone.error': 'Erreur',
     'tone.info': 'Information',
     'toast.region': 'Notifications',
-    'toast.dismiss': 'Fermer la notification'
+    'toast.dismiss': 'Fermer la notification',
+    'auth.loading': 'Vérification de la session…',
+    'auth.session.error.title': 'Impossible de vérifier votre session',
+    'auth.login.title': 'Connexion',
+    'auth.login.subtitle': 'Connectez-vous pour réceptionner la marchandise.',
+    'auth.login.submit': 'Se connecter',
+    'auth.login.submitting': 'Connexion…',
+    'auth.username': 'Identifiant',
+    'auth.password': 'Mot de passe',
+    'auth.field.required': 'Ce champ est obligatoire.',
+    'auth.signOut': 'Se déconnecter',
+    'auth.signOut.failed': 'Déconnexion impossible. Réessayez.',
+    'auth.signedInAs': 'Connecté : {name}'
 } as const;

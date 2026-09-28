@@ -164,6 +164,18 @@ describe('SessionProvider', () => {
         expect(client.getQueryData(['delivery', 'current'])).toEqual({ id: 'd1' });
     });
 
+    it('signs out locally when the server answers 401 to the sign-out, the session being gone already', async () => {
+        mocked.currentSession.mockResolvedValue(sessionFixture());
+        mocked.signOut.mockRejectedValue(unauthorized());
+        renderProbe();
+        await waitFor(() => expect(status()).toHaveTextContent('signedIn'));
+
+        await userEvent.click(screen.getByRole('button', { name: 'signOut' }));
+
+        await waitFor(() => expect(status()).toHaveTextContent('signedOut'));
+        expect(screen.queryByTestId('signOutError')).not.toBeInTheDocument();
+    });
+
     it('ends the session and clears the cache when the HTTP client reports a 401', async () => {
         mocked.currentSession.mockResolvedValue(sessionFixture());
         const { client } = renderProbe();

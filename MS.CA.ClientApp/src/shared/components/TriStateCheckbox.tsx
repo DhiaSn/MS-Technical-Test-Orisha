@@ -23,6 +23,7 @@ export function TriStateCheckbox({ status, label, onChange, disabled = false, bu
         }
     }, [status]);
 
+    // A busy box stays enabled: disabling an input drops the keyboard focus that is on it.
     return (
         <input
             ref={ref}
@@ -32,8 +33,11 @@ export function TriStateCheckbox({ status, label, onChange, disabled = false, bu
             checked={status === 'all'}
             aria-label={label}
             aria-busy={busy}
-            disabled={disabled || busy}
-            onChange={() => onChange(status !== 'all')}
+            aria-disabled={busy || undefined}
+            disabled={disabled}
+            onChange={() => {
+                if (!busy) onChange(status !== 'all');
+            }}
         />
     );
 }
