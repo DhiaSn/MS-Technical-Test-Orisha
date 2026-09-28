@@ -43,7 +43,8 @@ docker compose up -d postgres                                   # base seule
 dotnet run --project MS.SS.Core/MS.SS.Core.API                  # API sur http://localhost:5080
 cd MS.CA.ClientApp && cp .env.example .env.local && npm ci && npm run dev   # UI sur http://localhost:3000
 ```
-Prérequis : .NET SDK 10, Node 22.
+Prérequis : .NET SDK 10, Node 22. La chaîne de connexion et la clé de signature JWT ne sont pas dans le
+dépôt : voir [`MS.SS.Core/SECRETS.md`](MS.SS.Core/SECRETS.md) (`dotnet user-secrets`, deux commandes).
 
 ### Tests
 

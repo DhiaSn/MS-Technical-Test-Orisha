@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace MS.SS.Core.Infrastructure.Database.Context;
 
@@ -10,13 +11,22 @@ namespace MS.SS.Core.Infrastructure.Database.Context;
 [ExcludeFromCodeCoverage]
 public sealed class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
-    private const string LocalConnectionString =
-        "Host=localhost;Port=5433;Database=reception;Username=reception;Password=reception_local_dev";
-
     public AppDbContext CreateDbContext(string[] args)
     {
-        var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
-            ?? LocalConnectionString;
+        var apiProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "MS.SS.Core.API");
+
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.Exists(apiProjectPath) ? apiProjectPath : Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true)
+            .AddJsonFile("appsettings.Development.json", optional: true)
+            .AddUserSecrets("ms-ss-core-api")
+            .AddEnvironmentVariables()
+            .Build();
+
+        // Scaffolding only reads the model, never the database, so a placeholder is fine when no
+        // connection string is configured — `dotnet ef migrations add` must work on a fresh clone.
+        var connectionString = configuration.GetConnectionString("DefaultConnection")
+            ?? "Host=localhost;Database=reception_design_time;Username=reception;Password=reception_local_dev";
 
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
         optionsBuilder
