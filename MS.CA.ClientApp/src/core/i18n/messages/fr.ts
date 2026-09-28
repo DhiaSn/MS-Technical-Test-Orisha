@@ -1,6 +1,8 @@
 export const fr = {
     'app.title': 'Réception logistique',
     'app.description': 'Validation de la réception des marchandises d’une commande fournisseur.',
+    'theme.toggle.toDark': 'Activer le thème sombre',
+    'theme.toggle.toLight': 'Activer le thème clair',
     'error.network': 'Impossible de joindre le serveur. Vérifiez votre connexion.',
     'error.timeout': 'Le serveur met trop de temps à répondre.',
     'error.unauthorized': 'Votre session a expiré. Reconnectez-vous.',

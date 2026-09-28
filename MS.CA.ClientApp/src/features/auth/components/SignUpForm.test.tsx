@@ -100,6 +100,42 @@ describe('SignUpForm', () => {
         expect(screen.queryByText('Une erreur inattendue est survenue.')).not.toBeInTheDocument();
     });
 
+    it('shows a per-field username validation error under the username field', async () => {
+        const onSubmit = jest.fn().mockRejectedValue(
+            new AppError({
+                kind: 'validation',
+                message: 'x',
+                code: 'validation.failed',
+                fieldCodes: { username: [{ code: 'username.invalid' }] }
+            })
+        );
+        renderWithProviders(<SignUpForm onSubmit={onSubmit} />);
+        await fillIn();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Créer le compte' }));
+
+        expect(await screen.findByLabelText('Identifiant')).toHaveAttribute('aria-invalid', 'true');
+        expect(screen.queryByText('Une erreur inattendue est survenue.')).not.toBeInTheDocument();
+    });
+
+    it('shows a per-field display name error under the display name field', async () => {
+        const onSubmit = jest.fn().mockRejectedValue(
+            new AppError({
+                kind: 'validation',
+                message: 'x',
+                code: 'validation.failed',
+                fieldCodes: { displayName: [{ code: 'field.too_long', params: { max: '100' } }] }
+            })
+        );
+        renderWithProviders(<SignUpForm onSubmit={onSubmit} />);
+        await fillIn();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Créer le compte' }));
+
+        expect(await screen.findByText('Ce champ ne doit pas dépasser 100 caractères.')).toBeInTheDocument();
+        expect(screen.queryByText('Une erreur inattendue est survenue.')).not.toBeInTheDocument();
+    });
+
     it('lists every password error at once when the server rejects several rules', async () => {
         const onSubmit = jest.fn().mockRejectedValue(
             new AppError({

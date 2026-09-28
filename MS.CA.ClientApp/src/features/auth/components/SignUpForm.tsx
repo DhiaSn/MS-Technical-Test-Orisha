@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { describeError, describeFieldErrors, isAppError, normalizeError } from '@/core/errors';
+import { type AppError, describeError, describeFieldErrors, normalizeError } from '@/core/errors';
 import { translate } from '@/core/i18n/translate';
 import { usePasswordPolicy } from '@/features/auth/hooks/usePasswordPolicy';
 import { buildPasswordHint } from '@/features/auth/passwordHint';
@@ -15,15 +15,23 @@ export interface SignUpFormProps {
 
 interface FieldErrors {
     username?: string;
+    displayName?: string;
     password: string[];
 }
 
-function fieldErrorsFor(cause: unknown): FieldErrors {
-    const error = normalizeError(cause);
-    if (isAppError(error) && error.code === 'account.username_taken') {
+const NO_FIELD_ERRORS: FieldErrors = { password: [] };
+
+function fieldErrorsFor(error: AppError): FieldErrors {
+    // A 409 carries no per-field codes: map the top-level conflict to the username field by hand.
+    if (error.code === 'account.username_taken') {
         return { username: describeError(error), password: [] };
     }
-    return { password: describeFieldErrors(error, 'password') };
+
+    return {
+        username: describeFieldErrors(error, 'username')[0],
+        displayName: describeFieldErrors(error, 'displayName')[0],
+        password: describeFieldErrors(error, 'password')
+    };
 }
 
 export function SignUpForm({ onSubmit }: SignUpFormProps) {
@@ -32,7 +40,7 @@ export function SignUpForm({ onSubmit }: SignUpFormProps) {
     const [displayName, setDisplayName] = useState('');
     const [password, setPassword] = useState('');
     const [missing, setMissing] = useState({ username: false, displayName: false, password: false });
-    const [fieldErrors, setFieldErrors] = useState<FieldErrors>({ password: [] });
+    const [fieldErrors, setFieldErrors] = useState<FieldErrors>(NO_FIELD_ERRORS);
     const [message, setMessage] = useState<string>();
     const [pending, setPending] = useState(false);
     const passwordRef = useRef<HTMLInputElement>(null);
@@ -50,14 +58,15 @@ export function SignUpForm({ onSubmit }: SignUpFormProps) {
         submitting.current = true;
         setPending(true);
         setMessage(undefined);
-        setFieldErrors({ password: [] });
+        setFieldErrors(NO_FIELD_ERRORS);
         try {
             await onSubmit({ username: username.trim(), displayName: displayName.trim(), password });
         } catch (cause) {
             const error = normalizeError(cause);
             const forFields = fieldErrorsFor(error);
             setFieldErrors(forFields);
-            if (forFields.username === undefined && forFields.password.length === 0) setMessage(describeError(error));
+            const hasFieldError = forFields.username !== undefined || forFields.displayName !== undefined || forFields.password.length > 0;
+            if (!hasFieldError) setMessage(describeError(error));
             setPassword('');
             passwordRef.current?.focus();
             submitting.current = false;
@@ -80,7 +89,10 @@ export function SignUpForm({ onSubmit }: SignUpFormProps) {
                     onChange={(event) => setUsername(event.target.value)}
                 />
             </FormField>
-            <FormField label={translate('auth.displayName')} error={missing.displayName ? translate('auth.field.required') : undefined}>
+            <FormField
+                label={translate('auth.displayName')}
+                error={missing.displayName ? translate('auth.field.required') : fieldErrors.displayName}
+            >
                 <input
                     name="displayName"
                     autoComplete="name"
