@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="WolverineFx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MS.SS.Core.Infrastructure\MS.SS.Core.Infrastructure.csproj" />
+    <ProjectReference Include="..\MS.SS.Core.Security\MS.SS.Core.Security.csproj" />
+    <ProjectReference Include="..\MS.SS.Core.SharedKernel\MS.SS.Core.SharedKernel.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -3,9 +3,11 @@
     <Project Path="MS.SS.Core.API/MS.SS.Core.API.csproj" />
     <Project Path="MS.SS.Core.App/MS.SS.Core.App.csproj" />
     <Project Path="MS.SS.Core.Infrastructure/MS.SS.Core.Infrastructure.csproj" />
+    <Project Path="MS.SS.Core.Security/MS.SS.Core.Security.csproj" />
     <Project Path="MS.SS.Core.SharedKernel/MS.SS.Core.SharedKernel.csproj" />
   </Folder>
   <Folder Name="/src/modules/">
+    <Project Path="MS.SS.Core.Modules.Identity/MS.SS.Core.Modules.Identity.csproj" />
     <Project Path="MS.SS.Core.Modules.Reception/MS.SS.Core.Modules.Reception.csproj" />
   </Folder>
   <Folder Name="/tests/">

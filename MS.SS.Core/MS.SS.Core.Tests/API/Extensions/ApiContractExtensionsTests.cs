@@ -6,7 +6,11 @@ namespace MS.SS.Core.Tests.API.Extensions;
 public sealed class ApiContractExtensionsTests
 {
     [Theory]
+    [InlineData(401, ErrorCodes.Unauthenticated)]
+    [InlineData(403, ErrorCodes.Forbidden)]
     [InlineData(404, ErrorCodes.NotFound)]
+    [InlineData(409, ErrorCodes.Conflict)]
+    [InlineData(429, ErrorCodes.RateLimited)]
     [InlineData(500, ErrorCodes.InternalError)]
     [InlineData(503, ErrorCodes.InternalError)]
     [InlineData(400, ErrorCodes.RequestInvalid)]

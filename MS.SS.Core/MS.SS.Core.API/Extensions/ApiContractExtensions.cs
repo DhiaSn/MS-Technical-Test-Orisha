@@ -1,5 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authorization;
+using MS.SS.Core.API.Middlewares;
 using MS.SS.Core.API.OpenApi;
 using MS.SS.Core.SharedKernel.Common;
 
@@ -32,6 +34,8 @@ public static class ApiContractExtensions
             extensions["code"] = CodeForStatus(context.ProblemDetails.Status ?? context.HttpContext.Response.StatusCode);
         });
 
+        services.AddSingleton<IAuthorizationMiddlewareResultHandler, ProblemAuthorizationResultHandler>();
+
         services.AddOpenApi(options => options.AddSchemaTransformer<ProblemDetailsSchemaTransformer>());
 
         return services;
@@ -39,7 +43,11 @@ public static class ApiContractExtensions
 
     public static string CodeForStatus(int status) => status switch
     {
+        StatusCodes.Status401Unauthorized => ErrorCodes.Unauthenticated,
+        StatusCodes.Status403Forbidden => ErrorCodes.Forbidden,
         StatusCodes.Status404NotFound => ErrorCodes.NotFound,
+        StatusCodes.Status409Conflict => ErrorCodes.Conflict,
+        StatusCodes.Status429TooManyRequests => ErrorCodes.RateLimited,
         >= StatusCodes.Status500InternalServerError => ErrorCodes.InternalError,
         _ => ErrorCodes.RequestInvalid
     };

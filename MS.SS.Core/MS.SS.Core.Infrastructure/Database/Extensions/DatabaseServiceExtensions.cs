@@ -65,7 +65,6 @@ public static class DatabaseServiceExtensions
 
     private static void EnableDevelopmentDiagnostics(DbContextOptionsBuilder options)
     {
-        options.EnableSensitiveDataLogging();
         options.EnableDetailedErrors();
     }
 }

@@ -13,8 +13,21 @@ public class ModuleRegistryTests
     }
 
     [Fact]
+    public void Identity_and_Reception_assemblies_are_registered()
+    {
+        Assert.Contains(ModuleRegistry.IdentityAssembly, ModuleRegistry.AssemblyNames);
+        Assert.Contains(ModuleRegistry.ReceptionAssembly, ModuleRegistry.AssemblyNames);
+    }
+
+    [Fact]
     public void Reception_schema_is_named_after_its_module()
     {
         Assert.Equal("reception", ModuleSchemas.Reception);
+    }
+
+    [Fact]
+    public void Identity_schema_is_named_after_its_module()
+    {
+        Assert.Equal("identity", ModuleSchemas.Identity);
     }
 }

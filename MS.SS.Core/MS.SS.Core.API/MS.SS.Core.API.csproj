@@ -21,7 +21,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MS.SS.Core.App\MS.SS.Core.App.csproj" />
+    <ProjectReference Include="..\MS.SS.Core.Modules.Identity\MS.SS.Core.Modules.Identity.csproj" />
     <ProjectReference Include="..\MS.SS.Core.Modules.Reception\MS.SS.Core.Modules.Reception.csproj" />
+    <ProjectReference Include="..\MS.SS.Core.Security\MS.SS.Core.Security.csproj" />
     <ProjectReference Include="..\MS.SS.Core.SharedKernel\MS.SS.Core.SharedKernel.csproj" />
   </ItemGroup>
 

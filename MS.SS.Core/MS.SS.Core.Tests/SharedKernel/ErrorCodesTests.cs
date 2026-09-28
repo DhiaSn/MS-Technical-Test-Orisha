@@ -42,6 +42,8 @@ public sealed partial class ErrorCodesTests
         Assert.Equal(ErrorCodes.InvalidState, new InvalidEntityStateException("x", new Exception()).Code);
         Assert.Equal(ErrorCodes.InvalidState, new InvalidEntityStateException().Code);
         Assert.Equal(ErrorCodes.ValidationFailed, new ValidationFailedException("f", "c", "m").Code);
+        Assert.Equal(ErrorCodes.Unauthenticated, new UnauthenticatedException("x").Code);
+        Assert.Equal(ErrorCodes.Conflict, new ConflictException("x").Code);
     }
 
     [Fact]

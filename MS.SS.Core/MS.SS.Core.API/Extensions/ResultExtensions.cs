@@ -48,6 +48,12 @@ public static class ResultExtensions
         InvalidEntityStateException invalidState => Problem(
             invalidState.Message, StatusCodes.Status400BadRequest, invalidState.Code),
 
+        UnauthenticatedException unauthenticated => Problem(
+            unauthenticated.Message, StatusCodes.Status401Unauthorized, unauthenticated.Code),
+
+        ConflictException conflict => Problem(
+            conflict.Message, StatusCodes.Status409Conflict, conflict.Code),
+
         ArgumentException => Problem(
             "Invalid request.", StatusCodes.Status400BadRequest, ErrorCodes.RequestInvalid),
 

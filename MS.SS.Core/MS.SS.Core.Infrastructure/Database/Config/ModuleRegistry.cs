@@ -10,7 +10,8 @@ namespace MS.SS.Core.Infrastructure.Database.Config;
 /// </remarks>
 public static class ModuleRegistry
 {
+    public const string IdentityAssembly = "MS.SS.Core.Modules.Identity";
     public const string ReceptionAssembly = "MS.SS.Core.Modules.Reception";
 
-    public static IReadOnlyList<string> AssemblyNames => [ReceptionAssembly];
+    public static IReadOnlyList<string> AssemblyNames => [IdentityAssembly, ReceptionAssembly];
 }

@@ -1,6 +1,8 @@
 using MS.SS.Core.API.Extensions;
 using MS.SS.Core.App.Extensions;
+using MS.SS.Core.App.Seeding;
 using MS.SS.Core.Infrastructure.Database.Extensions;
+using MS.SS.Core.Security.Extensions;
 using Serilog;
 
 LogExtensions.AddBootstrapLog();
@@ -13,11 +15,15 @@ try
 
     builder.InitAppLog();
 
+    builder.Services.AddReverseProxyForwarding(builder.Configuration);
+
     builder.AddCorsOrigins();
 
     builder.Services.AddInfrastructureServices(builder.Configuration, builder.Environment);
 
     builder.Services.AddApplicationServices(builder.Configuration, builder.Environment);
+
+    builder.Services.AddSecurityServices(builder.Configuration);
 
     builder.AddAppWolverine();
 
@@ -26,6 +32,8 @@ try
     var app = builder.Build();
 
     await app.ApplyDatabaseMigrationsAsync();
+
+    await app.SeedDemoDataAsync();
 
     app.UsePlatformPipeline();
 

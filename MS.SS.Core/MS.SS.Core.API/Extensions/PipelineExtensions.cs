@@ -8,6 +8,9 @@ public static class PipelineExtensions
 {
     public static void UsePlatformPipeline(this WebApplication app)
     {
+        // First, so every later component sees the real client address and scheme.
+        app.UseForwardedHeaders();
+
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseStatusCodePages();
@@ -22,6 +25,8 @@ public static class PipelineExtensions
         // browser needs in order to read it.
         app.UseAppCors();
 
+        app.UseMiddleware<CsrfProtectionMiddleware>();
+
         // TLS is terminated by the proxy in front of the API, so redirection is opt-out.
         if (!app.Configuration.GetValue("BehindReverseProxy", true))
         {
@@ -29,6 +34,14 @@ public static class PipelineExtensions
         }
 
         app.UseRouting();
+
+        app.UseAuthentication();
+
+        // After routing so the per-endpoint policy resolves, before authorization so a flood of
+        // sign-in attempts is refused without being evaluated.
+        app.UseRateLimiter();
+
+        app.UseAuthorization();
 
         app.MapAppHealthChecks();
 

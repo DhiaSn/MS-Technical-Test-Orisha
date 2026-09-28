@@ -100,6 +100,48 @@ public sealed class ResultExtensionsTests
     }
 
     [Fact]
+    public async Task UnauthenticatedException_MapsTo401_WithItsCodeAndMessage()
+    {
+        var exception = new UnauthenticatedException(ErrorCodes.InvalidCredentials, "Invalid username or password.");
+
+        var (status, body) = await Execute(ResultExtensions.ToProblem(exception));
+
+        Assert.Equal(401, status);
+        Assert.Equal(ErrorCodes.InvalidCredentials, body.GetProperty("code").GetString());
+        Assert.Equal("Invalid username or password.", body.GetProperty("title").GetString());
+    }
+
+    [Fact]
+    public async Task UnauthenticatedException_WithoutACode_DefaultsToUnauthenticated()
+    {
+        var (status, body) = await Execute(ResultExtensions.ToProblem(new UnauthenticatedException("Sign in first.")));
+
+        Assert.Equal(401, status);
+        Assert.Equal(ErrorCodes.Unauthenticated, body.GetProperty("code").GetString());
+    }
+
+    [Fact]
+    public async Task ConflictException_MapsTo409_WithItsCodeAndMessage()
+    {
+        var exception = new ConflictException(ErrorCodes.UsernameTaken, "That username is taken.");
+
+        var (status, body) = await Execute(ResultExtensions.ToProblem(exception));
+
+        Assert.Equal(409, status);
+        Assert.Equal(ErrorCodes.UsernameTaken, body.GetProperty("code").GetString());
+        Assert.Equal("That username is taken.", body.GetProperty("title").GetString());
+    }
+
+    [Fact]
+    public async Task ConflictException_WithoutACode_DefaultsToConflict()
+    {
+        var (status, body) = await Execute(ResultExtensions.ToProblem(new ConflictException("Already there.")));
+
+        Assert.Equal(409, status);
+        Assert.Equal(ErrorCodes.Conflict, body.GetProperty("code").GetString());
+    }
+
+    [Fact]
     public async Task ArgumentException_MapsTo400_AsRequestInvalid()
     {
         var (status, body) = await Execute(ResultExtensions.ToProblem(new ArgumentException("secret detail")));
