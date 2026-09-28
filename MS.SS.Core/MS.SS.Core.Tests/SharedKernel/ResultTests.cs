@@ -93,6 +93,16 @@ public sealed class ResultTests
     }
 
     [Fact]
+    public void GenericResult_ImplicitToNonGenericResult_Null_IsFailure()
+    {
+        Result<string> generic = (string?)null;
+        Result plain = generic;
+
+        Assert.True(plain.IsFailure);
+        Assert.IsType<InvalidOperationException>(plain.Exception);
+    }
+
+    [Fact]
     public void NonGenericResult_Success_IsSuccess()
     {
         var result = Result.Success();

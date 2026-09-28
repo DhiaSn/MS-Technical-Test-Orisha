@@ -10,6 +10,8 @@ public sealed class ApiContractExtensionsTests
     [InlineData(403, ErrorCodes.Forbidden)]
     [InlineData(404, ErrorCodes.NotFound)]
     [InlineData(409, ErrorCodes.Conflict)]
+    [InlineData(413, ErrorCodes.RequestTooLarge)]
+    [InlineData(415, ErrorCodes.UnsupportedMediaType)]
     [InlineData(429, ErrorCodes.RateLimited)]
     [InlineData(500, ErrorCodes.InternalError)]
     [InlineData(503, ErrorCodes.InternalError)]
