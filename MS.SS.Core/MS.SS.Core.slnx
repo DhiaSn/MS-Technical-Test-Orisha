@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="MS.SS.Core.API/MS.SS.Core.API.csproj" />
+    <Project Path="MS.SS.Core.App/MS.SS.Core.App.csproj" />
+    <Project Path="MS.SS.Core.Infrastructure/MS.SS.Core.Infrastructure.csproj" />
+    <Project Path="MS.SS.Core.SharedKernel/MS.SS.Core.SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/src/modules/">
+    <Project Path="MS.SS.Core.Modules.Reception/MS.SS.Core.Modules.Reception.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="MS.SS.Core.Tests/MS.SS.Core.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+</Solution>

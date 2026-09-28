@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MS.SS.Core.API\MS.SS.Core.API.csproj" />
+    <ProjectReference Include="..\MS.SS.Core.App\MS.SS.Core.App.csproj" />
+    <ProjectReference Include="..\MS.SS.Core.Infrastructure\MS.SS.Core.Infrastructure.csproj" />
+    <ProjectReference Include="..\MS.SS.Core.Modules.Reception\MS.SS.Core.Modules.Reception.csproj" />
+    <ProjectReference Include="..\MS.SS.Core.SharedKernel\MS.SS.Core.SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>
