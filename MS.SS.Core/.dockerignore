@@ -1,7 +1,7 @@
 **/bin/
 **/obj/
-**/.vs/
 **/logs/
+**/.vs/
 **/*.user
-**/Dockerfile*
 MS.SS.Core.Tests/
+.config/
