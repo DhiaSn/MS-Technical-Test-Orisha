@@ -1,0 +1,24 @@
+.toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--duration) var(--ease);
+
+    &:hover {
+        color: var(--text);
+        background: var(--surface-sunken);
+    }
+}
+
+.placeholder {
+    width: 2.5rem;
+    height: 2.5rem;
+}

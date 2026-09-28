@@ -10,3 +10,14 @@ export interface Credentials {
     username: string;
     password: string;
 }
+
+export interface Registration extends Credentials {
+    displayName: string;
+}
+
+export interface PasswordPolicy {
+    minimumLength: number;
+    requireUppercase: boolean;
+    requireLowercase: boolean;
+    requireDigit: boolean;
+}

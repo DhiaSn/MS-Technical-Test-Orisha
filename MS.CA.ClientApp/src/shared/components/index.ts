@@ -6,5 +6,6 @@ export { EmptyState, type EmptyStateProps } from './EmptyState';
 export { FormField, type FormFieldProps } from './FormField';
 export { ProgressBar, type ProgressBarProps } from './ProgressBar';
 export { Spinner, type SpinnerProps } from './Spinner';
+export { ThemeToggle } from './ThemeToggle';
 export { ToastProvider, useToast } from './Toast';
 export { TriStateCheckbox, type CheckState, type TriStateCheckboxProps } from './TriStateCheckbox';

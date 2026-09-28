@@ -4,7 +4,7 @@ import { createContext, useCallback, useEffect, useMemo, useRef, useState } from
 import { useQueryClient } from '@tanstack/react-query';
 import { authService, sessionEvents } from '@/api';
 import { type AppError, normalizeError } from '@/core/errors';
-import type { Credentials, Session } from '@/features/auth/types';
+import type { Credentials, Registration, Session } from '@/features/auth/types';
 
 export type SessionState =
     { status: 'loading' } | { status: 'signedOut' } | { status: 'signedIn'; session: Session } | { status: 'error'; error: AppError };
@@ -12,6 +12,7 @@ export type SessionState =
 export interface SessionValue {
     state: SessionState;
     signIn: (credentials: Credentials) => Promise<Session>;
+    register: (registration: Registration) => Promise<Session>;
     signOut: () => Promise<void>;
     retry: () => void;
 }
@@ -67,6 +68,15 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         [settle]
     );
 
+    const register = useCallback(
+        async (registration: Registration) => {
+            const session = await authService.register(registration);
+            settle({ status: 'signedIn', session });
+            return session;
+        },
+        [settle]
+    );
+
     const signOut = useCallback(async () => {
         try {
             await authService.signOut();
@@ -82,7 +92,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         setAttempt((n) => n + 1);
     }, []);
 
-    const value = useMemo<SessionValue>(() => ({ state, signIn, signOut, retry }), [state, signIn, signOut, retry]);
+    const value = useMemo<SessionValue>(() => ({ state, signIn, register, signOut, retry }), [state, signIn, register, signOut, retry]);
 
     return <SessionContext value={value}>{children}</SessionContext>;
 }

@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
 import { Providers } from '@/app/providers';
 import { translate } from '@/core/i18n/translate';
 import '@/styles/globals.scss';
+
+const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
 export const metadata: Metadata = {
     title: translate('app.title'),
@@ -15,7 +18,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="fr">
+        <html lang="fr" suppressHydrationWarning className={inter.className}>
             <body suppressHydrationWarning>
                 <Providers>{children}</Providers>
             </body>

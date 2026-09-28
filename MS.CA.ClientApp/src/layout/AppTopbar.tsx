@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { translate } from '@/core/i18n/translate';
 import { useSession } from '@/features/auth/hooks/useSession';
-import { Button, useToast } from '@/shared/components';
+import { Button, ThemeToggle, useToast } from '@/shared/components';
 import styles from './AppTopbar.module.scss';
 
 export function AppTopbar() {
@@ -25,14 +25,17 @@ export function AppTopbar() {
     return (
         <header className={styles.topbar}>
             <span className={styles.title}>{translate('app.title')}</span>
-            {state.status === 'signedIn' && (
-                <div className={styles.session}>
-                    <span>{translate('auth.signedInAs', { name: state.session.displayName })}</span>
-                    <Button variant="secondary" onClick={onSignOut} disabled={busy}>
-                        {translate('auth.signOut')}
-                    </Button>
-                </div>
-            )}
+            <div className={styles.controls}>
+                <ThemeToggle />
+                {state.status === 'signedIn' && (
+                    <div className={styles.session}>
+                        <span>{translate('auth.signedInAs', { name: state.session.displayName })}</span>
+                        <Button variant="secondary" onClick={onSignOut} disabled={busy}>
+                            {translate('auth.signOut')}
+                        </Button>
+                    </div>
+                )}
+            </div>
         </header>
     );
 }

@@ -2,21 +2,35 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 3.5rem;
-    padding: var(--space-2) var(--space-4);
+    min-height: 4rem;
+    padding: var(--space-2) var(--space-6);
     background: var(--surface);
     border-block-end: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
 }
 
 .title {
     font-size: var(--text-lg);
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
+    color: var(--text);
+    letter-spacing: -0.01em;
 }
 
 .session {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3);
+    gap: var(--space-4);
     align-items: center;
     justify-content: flex-end;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
 }

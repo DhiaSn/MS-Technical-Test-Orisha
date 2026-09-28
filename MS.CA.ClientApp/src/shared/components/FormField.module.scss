@@ -11,15 +11,31 @@
         background: var(--surface);
         border: 1px solid var(--border-strong);
         border-radius: var(--radius);
+        transition:
+            border-color var(--duration) var(--ease),
+            box-shadow var(--duration) var(--ease);
 
         &[aria-invalid='true'] {
             border-color: var(--danger);
+        }
+
+        &:focus-visible {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-surface);
+        }
+
+        &[aria-invalid='true']:focus-visible {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 3px var(--danger-surface);
         }
     }
 }
 
 .label {
-    font-weight: 600;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text);
 }
 
 .error {

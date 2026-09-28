@@ -35,4 +35,39 @@ describe('authService', () => {
 
         expect(httpClient.get).toHaveBeenCalledWith('/identity/auth/me', { signal: controller.signal, sessionAware: false });
     });
+
+    it('posts the registration to register without reporting a failure as an expiry', async () => {
+        const controller = new AbortController();
+        (httpClient.post as jest.Mock).mockResolvedValue({ username: 'nouvel-operateur' });
+
+        const session = await authService.register(
+            { username: 'nouvel-operateur', displayName: 'Nouvel opérateur', password: 'Reception2026' },
+            controller.signal
+        );
+
+        expect(session).toEqual({ username: 'nouvel-operateur' });
+        expect(httpClient.post).toHaveBeenCalledWith(
+            '/identity/auth/register',
+            { username: 'nouvel-operateur', displayName: 'Nouvel opérateur', password: 'Reception2026' },
+            { signal: controller.signal, sessionAware: false }
+        );
+    });
+
+    it('reads the password policy without reporting a failure as an expiry', async () => {
+        const controller = new AbortController();
+        (httpClient.get as jest.Mock).mockResolvedValue({
+            minimumLength: 8,
+            requireUppercase: true,
+            requireLowercase: true,
+            requireDigit: true
+        });
+
+        const policy = await authService.passwordPolicy(controller.signal);
+
+        expect(policy).toEqual({ minimumLength: 8, requireUppercase: true, requireLowercase: true, requireDigit: true });
+        expect(httpClient.get).toHaveBeenCalledWith('/identity/auth/password-policy', {
+            signal: controller.signal,
+            sessionAware: false
+        });
+    });
 });

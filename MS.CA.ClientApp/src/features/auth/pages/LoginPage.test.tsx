@@ -35,6 +35,12 @@ describe('LoginPage', () => {
         expect(document.title).toBe('Connexion');
     });
 
+    it('links to the sign-up page', () => {
+        renderLogin();
+
+        expect(screen.getByRole('link', { name: 'Créer un compte' })).toHaveAttribute('href', '/sign-up');
+    });
+
     it('signs in with the typed credentials', async () => {
         const stub = renderLogin();
         stub.signIn.mockResolvedValue(sessionFixture());

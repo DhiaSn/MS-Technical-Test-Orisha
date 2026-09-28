@@ -1,0 +1,17 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.error {
+    margin: calc(var(--space-4) * -1) 0 0;
+    font-size: var(--text-sm);
+    color: var(--danger);
+}
+
+.hint {
+    margin: calc(var(--space-4) * -1) 0 0;
+    font-size: var(--text-sm);
+    color: var(--text);
+}

@@ -7,27 +7,37 @@
 }
 
 .input {
-    width: 5rem;
-    height: 2.75rem;
+    width: 4.5rem;
+    height: 2.25rem;
     padding: 0 var(--space-2);
     font: inherit;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
     color: var(--text);
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    transition: all var(--duration) var(--ease);
 
     &:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 2px;
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-surface);
     }
 
     &[aria-invalid='true'] {
         border-color: var(--danger);
+
+        &:focus-visible {
+            box-shadow: 0 0 0 3px var(--danger-surface);
+        }
     }
 
     &:disabled {
         cursor: not-allowed;
         opacity: 0.6;
+        background: var(--surface-sunken);
     }
 }
 

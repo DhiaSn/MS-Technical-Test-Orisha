@@ -9,20 +9,21 @@ import { renderWithProviders } from '@/shared/testing/renderWithProviders';
 import { SessionProvider } from './SessionContext';
 
 jest.mock('@/api/authService', () => ({
-    authService: { currentSession: jest.fn(), signIn: jest.fn(), signOut: jest.fn() }
+    authService: { currentSession: jest.fn(), signIn: jest.fn(), signOut: jest.fn(), register: jest.fn() }
 }));
 
 const mocked = {
     currentSession: authService.currentSession as jest.Mock,
     signIn: authService.signIn as jest.Mock,
-    signOut: authService.signOut as jest.Mock
+    signOut: authService.signOut as jest.Mock,
+    register: authService.register as jest.Mock
 };
 
 const unauthorized = () => new AppError({ kind: 'unauthorized', message: 'x', status: 401 });
 const networkFailure = () => new AppError({ kind: 'network', message: 'x' });
 
 function Probe() {
-    const { state, signIn, signOut, retry } = useSession();
+    const { state, signIn, signOut, register, retry } = useSession();
     const [signInError, setSignInError] = useState<string>();
     const [signOutFailed, setSignOutFailed] = useState(false);
 
@@ -38,6 +39,15 @@ function Probe() {
                 }
             >
                 signIn
+            </button>
+            <button
+                onClick={() =>
+                    register({ username: 'nouvel-operateur', displayName: 'Nouvel opérateur', password: 'Reception2026' }).catch(
+                        (error: AppError) => setSignInError(error.code)
+                    )
+                }
+            >
+                register
             </button>
             <button onClick={() => signOut().catch(() => setSignOutFailed(true))}>signOut</button>
             <button onClick={retry}>retry</button>
@@ -119,6 +129,35 @@ describe('SessionProvider', () => {
         await userEvent.click(screen.getByRole('button', { name: 'signIn' }));
 
         expect(await screen.findByTestId('signInError')).toHaveTextContent('auth.invalid_credentials');
+        expect(status()).toHaveTextContent('signedOut');
+    });
+
+    it('registers and exposes the new session', async () => {
+        mocked.currentSession.mockRejectedValue(unauthorized());
+        mocked.register.mockResolvedValue(sessionFixture({ username: 'nouvel-operateur', displayName: 'Nouvel opérateur' }));
+        renderProbe();
+        await waitFor(() => expect(status()).toHaveTextContent('signedOut'));
+
+        await userEvent.click(screen.getByRole('button', { name: 'register' }));
+
+        await waitFor(() => expect(status()).toHaveTextContent('signedIn'));
+        expect(authService.register).toHaveBeenCalledWith({
+            username: 'nouvel-operateur',
+            displayName: 'Nouvel opérateur',
+            password: 'Reception2026'
+        });
+        expect(screen.getByTestId('name')).toHaveTextContent('Nouvel opérateur');
+    });
+
+    it('leaves the state alone and rejects when registration fails', async () => {
+        mocked.currentSession.mockRejectedValue(unauthorized());
+        mocked.register.mockRejectedValue(new AppError({ kind: 'validation', message: 'x', code: 'account.username_taken' }));
+        renderProbe();
+        await waitFor(() => expect(status()).toHaveTextContent('signedOut'));
+
+        await userEvent.click(screen.getByRole('button', { name: 'register' }));
+
+        expect(await screen.findByTestId('signInError')).toHaveTextContent('account.username_taken');
         expect(status()).toHaveTextContent('signedOut');
     });
 
